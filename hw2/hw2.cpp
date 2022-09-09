@@ -109,9 +109,12 @@ int main() {
     char out_name_c[] = "lpsum100kB_rev_by_c";
     char out_name_unix[] = "lpsum100kB_rev_by_unix";
 
-    clock_t tic = clock();
+    clock_t tic;
+    clock_t toc;
+
+    tic = clock();
     reverse_file_by_unix(in_name, out_name_unix);
-    clock_t toc = clock();
+    toc = clock();
     printf("Using Unix for 100kB: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
 
     tic = clock();
