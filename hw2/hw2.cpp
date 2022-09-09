@@ -5,7 +5,7 @@
 #include <string.h> // strlen()
 #include <time.h> // clock()
 
-#define MAX_LINE_LEN 100
+#define MAX_LINE_LEN 2000
 
 bool reverse_file_by_c(char* input_file_name, char* output_file_name) {
     FILE* f_read = fopen(input_file_name, "r");
