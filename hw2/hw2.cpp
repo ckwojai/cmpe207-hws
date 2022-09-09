@@ -4,8 +4,20 @@
 #include <unistd.h> // for types
 #include <string.h> // strlen()
 #include <time.h> // clock()
+#include <netdb.h> // getprotobynumber()
 
 #define MAX_LINE_LEN 2000
+
+bool print_all_protocols() {
+    struct protoent* protocol;
+    for (int i=0; i<=255; i++) {
+        protocol = getprotobynumber(i);
+        if (protocol) {
+            printf("%d: %s \n", protocol->p_proto, protocol->p_name);
+        }
+    }
+    return true;
+}
 
 bool reverse_file_by_c(char* input_file_name, char* output_file_name) {
     FILE* f_read = fopen(input_file_name, "r");
@@ -100,12 +112,15 @@ int main() {
     clock_t tic = clock();
     reverse_file_by_unix(in_name, out_name_unix);
     clock_t toc = clock();
-    printf("Using Unix: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+    printf("Using Unix for 100kB: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
 
     tic = clock();
     reverse_file_by_c(in_name, out_name_c);
     toc = clock();
-    printf("Using C: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+    printf("Using C for 100kB: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+
+    printf("Printing protocols...\n");
+    print_all_protocols();
     return 0;
 }
 
