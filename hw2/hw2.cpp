@@ -131,12 +131,12 @@ int main() {
     tic = clock();
     reverse_file_by_unix(in_name_2, out_name_unix_2);
     toc = clock();
-    printf("Using Unix for 100kB: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+    printf("Using Unix for 10mB: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
 
     tic = clock();
     reverse_file_by_c(in_name_2, out_name_c_2);
     toc = clock();
-    printf("Using C for 100kB: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+    printf("Using C for 10mB: Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
 
     // printf("Printing protocols...\n");
     // print_all_protocols();
