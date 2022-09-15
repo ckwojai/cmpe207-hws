@@ -1,4 +1,5 @@
 #include "active.h"
+#include <unistd.h> // close()
 
 int main() {
    const char* host = "ut1-wwv.nist.gov";
@@ -6,5 +7,6 @@ int main() {
 
    int sockfd = connectTCP(host, service);
 
+   close(sockfd);
    return 0;
 }

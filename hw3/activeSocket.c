@@ -34,8 +34,8 @@ int connectsock(const char* host, const char* service, const char* transport) {
     }
 
     // convert hostname to hostaddr and copy to sin
-    if (inet_pton(ADDR_FAM, host, &sin.sin_addr) <= 0) {
-        errexit("can't get \"%s\" host entry\n", host);
+    if (inet_pton(AF_INET, host, &sin.sin_addr) <= 0) {
+        errexit("can't get \"%s\" host entry. %s\n", host, strerror(errno));
     } // example of host: "google.com"
 
 
