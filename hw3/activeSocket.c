@@ -8,6 +8,7 @@
 #include <string.h> // strcmp()
 #include <arpa/inet.h> // inet_pton()
 #include <errno.h> // strerror()
+#include <unistd.h> // close()
 
 #define ADDR_FAM AF_INET
 
@@ -58,10 +59,10 @@ int connectsock(const char* host, const char* service, const char* transport) {
     sockfd = socket(ADDR_FAM, type, addrinfo->ai_protocol);
     // Create connection
     if (connect(sockfd, addrinfo->ai_addr, addrinfo->ai_addrlen) < 0)
-        errexit("can't connect to &s.%s: %s\n", host, service, strerror(errno)); // strerror converts errno to readable string
+        close(sockfd);
+        errexit("can't connect to %s of %s: %s\n", service, host, strerror(errno)); // strerror converts errno to readable string
 
     // Free addrinfo
     freeaddrinfo(addrinfo);
-    freeaddrinfo(&hints);
     return sockfd; // consumer of this function need to close this socket using: close(sockfd)
 }
