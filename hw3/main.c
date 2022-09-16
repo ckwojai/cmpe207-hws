@@ -12,7 +12,7 @@
 
 void TCPdaytime(const char* host, const char* service) {
    int nread;
-   time_t now;
+   /* time_t now; */
    char buf[LINELEN+1] = {0};
    int sockfd = connectTCP(host, service);
    const char* msg = "what time is it?\n";
@@ -20,13 +20,13 @@ void TCPdaytime(const char* host, const char* service) {
       errexit("write to %s of %s gone wrong", service, host);
    }
 
-   /* while ((nread = read(sockfd, buf, sizeof(buf))) > 0); */
+   while ((nread = read(sockfd, buf, sizeof(buf))) > 0);
    /* while ((nread = read(sockfd, (char*) &now, sizeof(now))) > 0); */
-   read(sockfd, (char*) &now, sizeof(now));
+   /* read(sockfd, (char*) &now, sizeof(now)); */
 
    /* printf("%s", buf); */
-   now = ntohl((u_long)now); /* put in host byte order */
-   now -= UNIXEPOCH; /* convert UCT to UNIX epoch */
+   /* now = ntohl((u_long)now); /\* put in host byte order *\/ */
+   /* now -= UNIXEPOCH; /\* convert UCT to UNIX epoch *\/ */
    printf("%s", ctime(&now));
    close(sockfd);
 }
