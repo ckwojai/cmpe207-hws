@@ -5,6 +5,7 @@
 #include <string.h> // strlen()
 #include <stdio.h> // printf()
 #include <time.h> // ctime()
+#include <arpa/inet.h> // ntohl()
 
 #define LINELEN 128
 #define UNIXEPOCH 2208988800 /* UNIX epoch, in UCT secs */
