@@ -15,12 +15,6 @@
 int connectsock(const char* host, const char* service, const char* transport) {
     int sockfd, type;
 
-    struct protoent* ppe; // pointer to protocol info entry
-    // Get protocol number from protocol name
-    /* if ((ppe = getprotobyname(transport)) == 0) { */
-    /*     errexit("can't get \"%s\" protocol entry\n", transport); */
-    /* } */
-
     if (strcmp(transport, "udp") == 0)
         type = SOCK_DGRAM;
     else
@@ -35,33 +29,13 @@ int connectsock(const char* host, const char* service, const char* transport) {
     if (status != 0) {
         errexit("can't getaddrinfo: %s \n", gai_strerror(status));
     }
-    /* - service determines the port */
-    /* - hints.socktype determines the protocol */
-    /* - host, together with the above get combined to sockaddr in .ai_addr that can be used to create socket directly */
-
-    /* // for connection */
-    /* struct sockaddr_in sin; */
-    /* // pointer to service info entry */
-    /* struct servent* pse; */
-    /* if ((pse = getservbyname(service, transport))) { // example of service: "daytime" */
-    /*     sin.sin_port = pse->s_port; // service port number, different than protocol number */
-    /* } else { */
-    /*     errexit("can't get \"%s\" service entry\n", service); */
-    /* } */
-
-    /* // convert hostname to hostaddr and copy to sin */
-    /* if (inet_pton(AF_INET, host, &sin.sin_addr) <= 0) { */
-    /*     errexit("can't get \"%s\" host entry. %s\n", host, strerror(errno)); */
-    /* } // example of host: "google.com" */
-
-
     // Create socket
     sockfd = socket(ADDR_FAM, type, addrinfo->ai_protocol);
     // Create connection
-    if (connect(sockfd, addrinfo->ai_addr, addrinfo->ai_addrlen) < 0)
+    if (connect(sockfd, addrinfo->ai_addr, addrinfo->ai_addrlen) < 0) {
         close(sockfd);
         errexit("can't connect to %s of %s: %s\n", service, host, strerror(errno)); // strerror converts errno to readable string
-
+    }
     // Free addrinfo
     freeaddrinfo(addrinfo);
     return sockfd; // consumer of this function need to close this socket using: close(sockfd)

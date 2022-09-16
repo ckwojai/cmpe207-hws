@@ -21,6 +21,6 @@ libactive.a: active.h activeTCP.o activeSocket.o errexit.o
 	ar rcs libactive.a activeTCP.o activeSocket.o errexit.o
 
 clean:
-	rm -f
+	rm -f hw3 main.o activeSocket.o errexit.o activeTCP.o libactive.a
 
 libs: libactive.a
