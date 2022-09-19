@@ -6,7 +6,6 @@ hw3: main.o libactive.a
 
 main.o: main.c active.h
 	$(CC) -c main.c
-     # $(CC) -I . -c main.c
 
 activeSocket.o: activeSocket.c activeSocket.h errexit.h
 	$(CC) -c activeSocket.c
