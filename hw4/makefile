@@ -1,25 +1,32 @@
 CC=gcc
 CFLAGS=-I.
 
-hw3: main.o libactive.a
-	$(CC) -o hw3 main.o libactive.a
+client: client.o libactive.a
+	$(CC) -o client client.o libactive.a
 
-main.o: main.c active.h
-	$(CC) -c main.c
+server: server.o libpassive.a
+	$(CC) -o server server.o libpassive.a
 
+client.o: client.c active.h
+	$(CC) -c client.c
 
-libactive.a: active.h activeTCP.o activeSocket.o errexit.o
-	ar rcs libactive.a activeTCP.o activeSocket.o errexit.o
-
-activeSocket.o: activeSocket.c activeSocket.h errexit.h
-	$(CC) -c activeSocket.c
+server.o: server.c passive.h
+	$(CC) -c server.c
 
 errexit.o: errexit.c errexit.h
 	$(CC) -c errexit.c
 
+libactive.a: active.h activeUDP.o activeTCP.o activeSocket.o errexit.o
+	ar rcs libactive.a activeUDP.o activeTCP.o activeSocket.o errexit.o
+
+activeSocket.o: activeSocket.c activeSocket.h errexit.h
+	$(CC) -c activeSocket.c
+
 activeTCP.o: activeTCP.c activeSocket.h
 	$(CC) -c activeTCP.c
 
+activeUDP.o: activeUDP.c activeSocket.h
+	$(CC) -c activeUDP.c
 
 libpassive.a: passive.h passiveUDP.o passiveSocket.o errexit.o
 	ar rcs libpassive.a passiveUDP.o passiveSocket.o errexit.o
@@ -27,7 +34,10 @@ libpassive.a: passive.h passiveUDP.o passiveSocket.o errexit.o
 passiveSocket.o: passiveSocket.c passiveSocket.h errexit.h
 	$(CC) -c passiveSocket.c
 
+passiveUDP.o: passiveUDP.c passiveSocket.h
+	$(CC) -c passiveUDP.c
+
 clean:
-	rm -f hw4 main.o libactive.a activeSocket.o errexit.o activeTCP.o libpassive.a passiveSocket.o
+	rm -f server client main.o libactive.a activeSocket.o errexit.o activeTCP.o libpassive.a passiveSocket.o
 
 libs: libactive.a libpassive.a
