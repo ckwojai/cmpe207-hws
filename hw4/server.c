@@ -23,6 +23,7 @@ int main() {
       if (recvfrom(sockfd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, &alen) < 0) {
          errexit("recvfrom: %s\n", strerror(errno));
       }
+      printf("Receive connection. Sending time back...");
       (void) time(&now);
       now = htonl((u_long)(now + UNIXEPOCH));
       (void) sendto(sockfd, (char *)&now, sizeof(now), 0, (struct sockaddr*)&fsin, sizeof(fsin));
