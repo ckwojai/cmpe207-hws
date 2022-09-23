@@ -50,7 +50,7 @@ int main() {
       (void) get_ip_str((struct sockaddr*) &fsin, clientAddr, 100);
 
       (void) time(&now);
-      printf("Receive connection from %s. Sending back time: %s...", clientAddr, ctime(&now));
+      printf("Received connection from %s. Sending back time: %s...", clientAddr, ctime(&now));
       now = htonl((u_long)(now + UNIXEPOCH));
 
       (void) sendto(sockfd, (char *)&now, sizeof(now), 0, (struct sockaddr*)&fsin, sizeof(fsin));
