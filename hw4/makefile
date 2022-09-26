@@ -38,6 +38,6 @@ passiveUDP.o: passiveUDP.c passiveSocket.h
 	$(CC) -c passiveUDP.c
 
 clean:
-	rm -f server client main.o libactive.a activeSocket.o errexit.o activeTCP.o activeUDP.o libpassive.a passiveSocket.o passiveUDP.o
+	rm -f server client *.o *.a
 
 libs: libactive.a libpassive.a
