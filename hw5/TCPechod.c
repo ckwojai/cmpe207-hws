@@ -12,7 +12,6 @@
 #include <errno.h> // strerror(), errno
 
 #define QLEN 5
-#define BUFSIZ 4096
 
 char *get_ip_str(const struct sockaddr *sa, char *s, size_t maxlen)
 {

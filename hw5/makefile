@@ -11,7 +11,7 @@ client.o: tcpEchoClient.c active.h
 	$(CC) tcpEchoClient.c -o client.o
 
 server.o: TCPechod.c passive.h
-	$(CC) TCPechod.c -o server.o
+	$(CC) -I . TCPechod.c -o server.o
 
 errexit.o: errexit.c errexit.h
 	$(CC) -c errexit.c
