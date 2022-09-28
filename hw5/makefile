@@ -8,10 +8,10 @@ server: server.o libpassive.a
 	$(CC) -o server server.o libpassive.a
 
 client.o: tcpEchoClient.c active.h
-	$(CC) tcpEchoClient.c -o client.o
+	$(CC) -c tcpEchoClient.c -o client.o
 
 server.o: TCPechod.c passive.h
-	$(CC) -I . TCPechod.c -o server.o
+	$(CC) -c TCPechod.c -o server.o
 
 errexit.o: errexit.c errexit.h
 	$(CC) -c errexit.c
