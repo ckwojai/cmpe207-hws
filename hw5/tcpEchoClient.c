@@ -17,7 +17,7 @@ int main() {
       fgets(req, LINELEN, stdin);
       write(sockfd, req, strlen(req));
       read(sockfd, res, strlen(res));
-      printf("%s", res);
+      printf("%s\n", res);
    }
    return 0;
 }
