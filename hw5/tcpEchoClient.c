@@ -11,21 +11,16 @@ int main() {
    const char* service = "echo";
    int n;
    int sockfd = connectTCP(host, service);
-   printf("Connected to Echo Server:\n");
+   printf("Connected to %s service on %s :\n", service, host);
    char req[LINELEN];
    char res[LINELEN];
    while (1) {
-      printf("Input again:\n");
       fgets(req, LINELEN, stdin);
       req[strcspn(req, "\n")] = 0; // remove trailing newline character
       write(sockfd, req, strlen(req));
-      n = read(sockfd, res, LINELEN);
-      res[n] = '\0';
-      /* while((n = read(sockfd, res, LINELEN)) > 0) { */
-      /*       res[n] = '\0'; */
-      /* } */
+      n = read(sockfd, res, LINELEN); /*TODO: why this doesn't work: while((n = read(sockfd, res, LINELEN)) > 0) { */
+      res[n] = '\0'; // make sure string is null-terminated
       printf("%s \n", res);
-      /* memset(res, '\0', strlen(res)); */
    }
    close(sockfd);
    return 0;

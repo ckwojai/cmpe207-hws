@@ -45,12 +45,13 @@ int TCPechod(int fd) {
    while (cc = read(fd, buf, sizeof buf)) {
       if (cc < 0)
          errexit("echo read: %s\n", strerror(errno));
-      printf("[%ld] Slave Socket %d receive request, sending \"%s\" back\n", (long)getpid(), fd, buf);
+      printf("[%ld] Slave socket %d received request, sending \"%s\" back\n", (long)getpid(), fd, buf);
       if (write(fd, buf, cc) < 0)
          errexit("echo write:  %s\n", strerror(errno));
       // reset buf to clear junk
       memset(buf, '\0', strlen(buf));
    }
+   printf("[%ld] Client disconnected. Closing slave socket and cleaning up process resource.", (long)getpid());
    return 0;
 }
 
@@ -64,7 +65,7 @@ int main() {
    msock = passiveTCP(service, QLEN);
    (void) signal(SIGCHLD, reaper);
 
-   printf("Master Socket %d, Running in Process: %ld\n", msock, (long)getpid());
+   printf("Master Socket Created. %s service running in process: %ld\n", service, (long)getpid());
 
    while(1) {
      alen = sizeof(fsin);
@@ -77,7 +78,7 @@ int main() {
      }
      switch (fork()) {
          case 0: // child process
-            printf("Slave Socket %d created, Running in Process: %ld\n", ssock, (long)getpid());
+            printf("Slave Socket %d created, Running in process: %ld\n", ssock, (long)getpid());
             (void) close(msock);
             exit(TCPechod(ssock));
          default: // parent process
