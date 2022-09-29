@@ -17,7 +17,7 @@ int main() {
       fgets(req, LINELEN, stdin);
       write(sockfd, req, strlen(req));
       memset(res, '\0', strlen(res));
-      read(sockfd, res, strlen(res));
+      while(read(sockfd, res, strlen(res)) > 0);
       printf("%s\n", res);
    }
    return 0;
