@@ -20,7 +20,8 @@ int main() {
       write(sockfd, req, strlen(req));
       read(sockfd, res, strlen(res));
       /* while(cc = read(sockfd, res, sizeof res)); */
-      printf("%s\n", res);
+      printf("%s \n", res);
+      memset(res, '\0', strlen(res));
    }
    close(sockfd);
    return 0;
