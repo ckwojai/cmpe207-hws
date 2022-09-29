@@ -45,6 +45,7 @@ int TCPechod(int fd) {
    while (cc = read(fd, buf, sizeof buf)) {
       if (cc < 0)
          errexit("echo read: %s\n", strerror(errno));
+      printf("[%ld] Slave Socket %d receive request, sending \"%s\" back", (long)getpid(), fd, buf);
       if (write(fd, buf, cc) < 0)
          errexit("echo write:  %s\n", strerror(errno));
    }
@@ -61,6 +62,8 @@ int main() {
    msock = passiveTCP(service, QLEN);
    (void) signal(SIGCHLD, reaper);
 
+   printf("Master Socket %d, Running in Process: %ld", msock, (long)getpid());
+
    while(1) {
      alen = sizeof(fsin);
      ssock = accept(msock, (struct sockaddr*) &fsin, &alen);
@@ -72,6 +75,7 @@ int main() {
      }
      switch (fork()) {
          case 0: // child process
+            printf("Slave Socket %d created, Running in Process: %ld", ssock, (long)getpid());
             (void) close(msock);
             exit(TCPechod(ssock));
          default: // parent process
