@@ -15,6 +15,7 @@ int main() {
    char res[LINELEN];
    while (1) {
       fgets(req, LINELEN, stdin);
+      req[strcspn(req, "\n")] = 0; // remove trailing newline character
       write(sockfd, req, strlen(req));
       read(sockfd, res, strlen(res));
       printf("%s\n", res);
