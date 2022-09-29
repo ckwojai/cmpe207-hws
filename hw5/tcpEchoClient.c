@@ -9,7 +9,7 @@
 int main() {
    const char* host = "localhost";
    const char* service = "echo";
-   int cc;
+   int n;
    int sockfd = connectTCP(host, service);
    printf("Connected to Echo Server:\n");
    char req[LINELEN];
@@ -19,9 +19,11 @@ int main() {
       req[strcspn(req, "\n")] = 0; // remove trailing newline character
       write(sockfd, req, strlen(req));
       /* read(sockfd, res, strlen(res)); */
-      while(cc = read(sockfd, res, sizeof res));
+      while((n = read(sockfd, res, LINELEN)) > 0) {
+            res[n] = '\0';
+      }
       printf("%s \n", res);
-      memset(res, '\0', strlen(res));
+      /* memset(res, '\0', strlen(res)); */
    }
    close(sockfd);
    return 0;
