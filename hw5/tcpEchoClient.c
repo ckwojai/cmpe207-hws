@@ -19,10 +19,11 @@ int main() {
       fgets(req, LINELEN, stdin);
       req[strcspn(req, "\n")] = 0; // remove trailing newline character
       write(sockfd, req, strlen(req));
-      /* read(sockfd, res, strlen(res)); */
-      while((n = read(sockfd, res, LINELEN)) > 0) {
-            res[n] = '\0';
-      }
+      n = read(sockfd, res, LINELEN);
+      res[n] = '\0';
+      /* while((n = read(sockfd, res, LINELEN)) > 0) { */
+      /*       res[n] = '\0'; */
+      /* } */
       printf("%s \n", res);
       /* memset(res, '\0', strlen(res)); */
    }
