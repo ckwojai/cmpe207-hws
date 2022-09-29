@@ -48,6 +48,8 @@ int TCPechod(int fd) {
       printf("[%ld] Slave Socket %d receive request, sending \"%s\" back\n", (long)getpid(), fd, buf);
       if (write(fd, buf, cc) < 0)
          errexit("echo write:  %s\n", strerror(errno));
+      // reset buf to clear junk
+      memset(buf, '\0', strlen(buf));
    }
    return 0;
 }
