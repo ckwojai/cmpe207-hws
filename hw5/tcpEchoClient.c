@@ -18,8 +18,8 @@ int main() {
       fgets(req, LINELEN, stdin);
       req[strcspn(req, "\n")] = 0; // remove trailing newline character
       write(sockfd, req, strlen(req));
-      read(sockfd, res, strlen(res));
-      /* while(cc = read(sockfd, res, sizeof res)); */
+      /* read(sockfd, res, strlen(res)); */
+      while(cc = read(sockfd, res, sizeof res));
       printf("%s \n", res);
       memset(res, '\0', strlen(res));
    }
