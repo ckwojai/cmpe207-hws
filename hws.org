@@ -1,0 +1,6 @@
+#+title: Hws
+
+* hw5
+#+begin_src shell
+ps aux | grep -i "./server"
+#+end_src
