@@ -123,6 +123,7 @@ TCPreceiveFile(int fd)
 	stats.st_contime += time(0) - start;
 	stats.st_concount--;
 	(void) pthread_mutex_unlock(&stats.st_mutex);
+	sleep(10); // to be able to see the threads in htop
 	return 0;
 }
 
