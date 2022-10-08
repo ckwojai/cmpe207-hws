@@ -43,12 +43,19 @@ passiveTCP.o: passiveTCP.c passiveSocket.h
 clean:
 	rm -f server client *.o *.a *.txt
 
-txtfiles:
+createFiles:
 	./file.sh 51200 1_client.txt
 	./file.sh 51200 2_client.txt
 	./file.sh 51200 3_client.txt
 	./file.sh 51200 4_client.txt
 	./file.sh 51200 5_client.txt
 
+
+verifyFiles:
+	diff 1_server.txt 1_client.txt
+	diff 2_server.txt 2_client.txt
+	diff 3_server.txt 3_client.txt
+	diff 4_server.txt 4_client.txt
+	diff 5_server.txt 5_client.txt
 
 libs: libactive.a libpassive.a

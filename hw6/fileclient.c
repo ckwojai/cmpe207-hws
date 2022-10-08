@@ -14,14 +14,20 @@ int main() {
    int sockfd = connectTCP(host, service);
    printf("Connected to %s service on %s :\n", service, host);
    char buf[BUFSIZE];
-   char* filename = "1_client.txt";
 
+   for (int i=0; i < 5; i++) {
+      char filename[20];
+      snprintf(filename, 20, "%d_client.txt", i+1);
+      int fd = open(filename, O_RDONLY);
+      int filesize = lseek(fd, 0, SEEK_END);
+      lseek(fd, 0, SEEK_SET);
+      read(fd, &buf, filesize);
+      printf("Sending %s to server.", filename);
+      write(sockfd, &buf, filesize);
+      // reset buf to clear junk
+      memset(buf, '\0', strlen(buf));
+   }
 
-   int fd = open(filename, O_RDONLY);
-   int filesize = lseek(fd, 0, SEEK_END);
-   lseek(fd, 0, SEEK_SET);
-   read(fd, &buf, filesize);
-   write(sockfd, &buf, filesize);
    close(sockfd);
    return 0;
 }
