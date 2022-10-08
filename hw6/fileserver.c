@@ -78,10 +78,12 @@ main(int argc, char *argv[])
 		}
 		fileCount++;
 		if (pthread_create(&th, &ta, (void * (*)(void *))TCPreceiveFile,
-						   (void *)ssock, (void *) fileCount) < 0) {
+						   (void *)ssock) < 0) {
 			errexit("pthread_create: %s\n", strerror(errno));
 		}
-		printf("Thread No. %d with id %ld start receiving file data\n", fileCount, (long) th);
+		(void) pthread_mutex_lock(&stats.st_mutex);
+		printf("Thread No. %d with id %ld start receiving file data\n", stats.st_contotal, (long) th);
+		(void) pthread_mutex_unlock(&stats.st_mutex);
 	}
 }
 
@@ -90,17 +92,18 @@ main(int argc, char *argv[])
  *------------------------------------------------------------------------
  */
 int
-TCPreceiveFile(int fd, int fileCount)
+TCPreceiveFile(int fd)
 {
 	time_t	start;
 	char	buf[BUFSIZ];
 	int	cc;
 	char file_name[20];
-	snprintf(file_name, 20, "%d_server.txt", fileCount);
 
 	start = time(0);
 	(void) pthread_mutex_lock(&stats.st_mutex);
 	stats.st_concount++;
+	stats.st_contotal++;
+	snprintf(file_name, 20, "%d_server.txt", stats.st_contotal);
 	(void) pthread_mutex_unlock(&stats.st_mutex);
 
     int f_write = open(file_name, O_WRONLY | O_CREAT, 0666); // 0666 for permission
@@ -119,7 +122,6 @@ TCPreceiveFile(int fd, int fileCount)
 	(void) pthread_mutex_lock(&stats.st_mutex);
 	stats.st_contime += time(0) - start;
 	stats.st_concount--;
-	stats.st_contotal++;
 	(void) pthread_mutex_unlock(&stats.st_mutex);
 	return 0;
 }
