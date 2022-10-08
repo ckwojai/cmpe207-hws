@@ -17,7 +17,7 @@
 #include <netinet/in.h>
 
 #define	QLEN		  32	/* maximum connection queue length	*/
-#define	BUFSIZE		65536  // 64kiB = 1024 * 64
+#define	BUFSIZE		8192 // read can only read 8192 at a time, so this is enough
 
 #define	INTERVAL	5	/* secs */
 
@@ -108,8 +108,8 @@ TCPreceiveFile(int fd)
 	while (cc = read(fd, buf, sizeof buf)) {
 		if (cc < 0)
 			errexit("file read: %s\n", strerror(errno));
-		printf("file length: %d \n", cc);
-		printf("buf: %s", buf);
+		// reset buf to clear junk
+		memset(buf, '\0', strlen(buf));
 		if (write(f_write, buf, cc) < 0)
 			errexit("file write: %s\n", strerror(errno));
 		(void) pthread_mutex_lock(&stats.st_mutex);
