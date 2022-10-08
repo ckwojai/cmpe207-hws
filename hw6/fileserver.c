@@ -101,7 +101,7 @@ TCPreceiveFile(int fd)
 	start = time(0);
 	(void) pthread_mutex_lock(&stats.st_mutex);
 	stats.st_concount++;
-	snprintf(file_name, 20, "%d_server.txt", stats.st_contotal);
+	snprintf(file_name, 20, "%d_server.txt", stats.st_contotal+1);
 	(void) pthread_mutex_unlock(&stats.st_mutex);
 
     int f_write = open(file_name, O_WRONLY | O_CREAT, 0666); // 0666 for permission
@@ -109,6 +109,7 @@ TCPreceiveFile(int fd)
 		if (cc < 0)
 			errexit("file read: %s\n", strerror(errno));
 		printf("file length: %d \n", cc);
+		printf("buf: %s", buf);
 		if (write(f_write, buf, cc) < 0)
 			errexit("file write: %s\n", strerror(errno));
 		(void) pthread_mutex_lock(&stats.st_mutex);
