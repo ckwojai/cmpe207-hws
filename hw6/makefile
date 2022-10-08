@@ -41,6 +41,14 @@ passiveTCP.o: passiveTCP.c passiveSocket.h
 	$(CC) -c passiveTCP.c
 
 clean:
-	rm -f server client *.o *.a
+	rm -f server client *.o *.a *.txt
+
+txtfiles:
+	./file.sh 51200 1_client.txt
+	./file.sh 51200 2_client.txt
+	./file.sh 51200 3_client.txt
+	./file.sh 51200 4_client.txt
+	./file.sh 51200 5_client.txt
+
 
 libs: libactive.a libpassive.a
