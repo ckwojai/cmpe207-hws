@@ -67,6 +67,7 @@ main(int argc, char *argv[])
 
 	if (pthread_create(&th, &ta, (void * (*)(void *))prstats, 0) < 0)
 		errexit("pthread_create(prstats): %s\n", strerror(errno));
+	int fileCount = 0;
 	while (1) {
 		alen = sizeof(fsin);
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
@@ -75,13 +76,12 @@ main(int argc, char *argv[])
 				continue;
 			errexit("accept: %s\n", strerror(errno));
 		}
+		fileCount++;
 		if (pthread_create(&th, &ta, (void * (*)(void *))TCPreceiveFile,
-						   (void *)ssock) < 0) {
+						   (void *)ssock, (void *) fileCount) < 0) {
 			errexit("pthread_create: %s\n", strerror(errno));
 		}
-		(void) pthread_mutex_lock(&stats.st_mutex);
-		printf("Thread No. %d with id %ld start receiving file data\n", stats.st_concount, (long) th);
-		(void) pthread_mutex_unlock(&stats.st_mutex);
+		printf("Thread No. %d with id %ld start receiving file data\n", fileCount, (long) th);
 	}
 }
 
@@ -90,17 +90,17 @@ main(int argc, char *argv[])
  *------------------------------------------------------------------------
  */
 int
-TCPreceiveFile(int fd)
+TCPreceiveFile(int fd, int fileCount)
 {
 	time_t	start;
 	char	buf[BUFSIZ];
 	int	cc;
 	char file_name[20];
+	snprintf(file_name, 20, "%d_server.txt", fileCount);
 
 	start = time(0);
 	(void) pthread_mutex_lock(&stats.st_mutex);
 	stats.st_concount++;
-	snprintf(file_name, 20, "%d_server.txt", stats.st_contotal+1);
 	(void) pthread_mutex_unlock(&stats.st_mutex);
 
     int f_write = open(file_name, O_WRONLY | O_CREAT, 0666); // 0666 for permission
