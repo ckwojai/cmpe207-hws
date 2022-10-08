@@ -7,11 +7,11 @@ client: client.o libactive.a
 server: server.o libpassive.a
 	$(CC) -o server server.o libpassive.a
 
-client.o: tcpEchoClient.c active.h
-	$(CC) -c tcpEchoClient.c -o client.o
+client.o: fileclient.c active.h
+	$(CC) -c fileclient.c -o client.o
 
-server.o: TCPechod.c passive.h
-	$(CC) -c TCPechod.c -o server.o
+server.o: fileserver.c passive.h
+	$(CC) -c fileserver.c -o server.o
 
 errexit.o: errexit.c errexit.h
 	$(CC) -c errexit.c

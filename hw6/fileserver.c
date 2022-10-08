@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
+#include <fcntl.h> // open(), O_WRONLY, O_CREAT
 
 #include <sys/types.h>
 #include <sys/signal.h>
@@ -16,7 +17,7 @@
 #include <netinet/in.h>
 
 #define	QLEN		  32	/* maximum connection queue length	*/
-#define	BUFSIZE		4096
+#define	BUFSIZE		65536  // 64kiB = 1024 * 64
 
 #define	INTERVAL	5	/* secs */
 
@@ -29,7 +30,7 @@ struct {
 } stats;
 
 void	prstats(void);
-int	TCPechod(int fd);
+int	TCPreceiveFile(int fd);
 int	errexit(const char *format, ...);
 int	passiveTCP(const char *service, int qlen);
 
@@ -42,9 +43,9 @@ main(int argc, char *argv[])
 {
 	pthread_t	th;
 	pthread_attr_t	ta;
-	char	*service = "echo";	/* service name or port number	*/
-	struct	sockaddr_in fsin;	/* the address of a client	*/
-	unsigned int	alen;		/* length of client's address	*/
+	char *service = "file";	/* service name or port number	*/
+	struct sockaddr_in fsin; /* the address of a client	*/
+	unsigned int alen;		/* length of client's address	*/
 	int	msock;			/* master server socket		*/
 	int	ssock;			/* slave server socket		*/
 
@@ -55,7 +56,7 @@ main(int argc, char *argv[])
 		service = argv[1];
 		break;
 	default:
-		errexit("usage: TCPechod [port]\n");
+		errexit("usage: TCPreceiveFile [port]\n");
 	}
 
 	msock = passiveTCP(service, QLEN);
@@ -75,9 +76,13 @@ main(int argc, char *argv[])
 				continue;
 			errexit("accept: %s\n", strerror(errno));
 		}
-		if (pthread_create(&th, &ta, (void * (*)(void *))TCPechod,
-		    (void *)ssock) < 0)
+		if (pthread_create(&th, &ta, (void * (*)(void *))TCPreceiveFile,
+						   (void *)ssock) < 0) {
 			errexit("pthread_create: %s\n", strerror(errno));
+		}
+		(void) pthread_mutex_lock(&stats.st_mutex);
+		printf("Thread No. %d with id %ld start receiving file data", stats.st_contotal, (long) th);
+		(void) pthread_mutex_unlock(&stats.st_mutex);
 	}
 }
 
@@ -86,21 +91,26 @@ main(int argc, char *argv[])
  *------------------------------------------------------------------------
  */
 int
-TCPechod(int fd)
+TCPreceiveFile(int fd)
 {
 	time_t	start;
 	char	buf[BUFSIZ];
 	int	cc;
+	char file_name[20];
 
 	start = time(0);
 	(void) pthread_mutex_lock(&stats.st_mutex);
 	stats.st_concount++;
+	snprintf(file_name, 20, "%d_server.txt", stats.st_contotal);
 	(void) pthread_mutex_unlock(&stats.st_mutex);
+
+    int f_write = open(file_name, O_WRONLY | O_CREAT, 0666); // 0666 for permission
 	while (cc = read(fd, buf, sizeof buf)) {
 		if (cc < 0)
-			errexit("echo read: %s\n", strerror(errno));
-		if (write(fd, buf, cc) < 0)
-			errexit("echo write: %s\n", strerror(errno));
+			errexit("file read: %s\n", strerror(errno));
+		printf("file length: %d \n", cc);
+		if (write(f_write, buf, cc) < 0)
+			errexit("file write: %s\n", strerror(errno));
 		(void) pthread_mutex_lock(&stats.st_mutex);
 		stats.st_bytecount += cc;
 		(void) pthread_mutex_unlock(&stats.st_mutex);
