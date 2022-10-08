@@ -10,7 +10,7 @@
 
 int main() {
    const char* host = "localhost";
-   const char* service = "file";
+   const char* service = "ftp";
    int sockfd = connectTCP(host, service);
    printf("Connected to %s service on %s :\n", service, host);
    char buf[BUFSIZE];

@@ -43,7 +43,7 @@ main(int argc, char *argv[])
 {
 	pthread_t	th;
 	pthread_attr_t	ta;
-	char *service = "file";	/* service name or port number	*/
+	char *service = "ftp";	/* service name or port number	*/
 	struct sockaddr_in fsin; /* the address of a client	*/
 	unsigned int alen;		/* length of client's address	*/
 	int	msock;			/* master server socket		*/
