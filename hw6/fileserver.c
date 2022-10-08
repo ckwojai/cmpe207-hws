@@ -67,7 +67,6 @@ main(int argc, char *argv[])
 
 	if (pthread_create(&th, &ta, (void * (*)(void *))prstats, 0) < 0)
 		errexit("pthread_create(prstats): %s\n", strerror(errno));
-
 	while (1) {
 		alen = sizeof(fsin);
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
@@ -81,7 +80,7 @@ main(int argc, char *argv[])
 			errexit("pthread_create: %s\n", strerror(errno));
 		}
 		(void) pthread_mutex_lock(&stats.st_mutex);
-		printf("Thread No. %d with id %ld start receiving file data\n", stats.st_contotal, (long) th);
+		printf("Thread No. %d with id %ld start receiving file data\n", stats.st_concount, (long) th);
 		(void) pthread_mutex_unlock(&stats.st_mutex);
 	}
 }
@@ -108,10 +107,10 @@ TCPreceiveFile(int fd)
 	while (cc = read(fd, buf, sizeof buf)) {
 		if (cc < 0)
 			errexit("file read: %s\n", strerror(errno));
-		// reset buf to clear junk
-		memset(buf, '\0', strlen(buf));
 		if (write(f_write, buf, cc) < 0)
 			errexit("file write: %s\n", strerror(errno));
+		// reset buf to clear junk
+		memset(buf, '\0', strlen(buf));
 		(void) pthread_mutex_lock(&stats.st_mutex);
 		stats.st_bytecount += cc;
 		(void) pthread_mutex_unlock(&stats.st_mutex);
