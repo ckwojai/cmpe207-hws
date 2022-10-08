@@ -5,7 +5,7 @@ client: client.o libactive.a
 	$(CC) -o client client.o libactive.a
 
 server: server.o libpassive.a
-	$(CC) -o server server.o libpassive.a
+	$(CC) -pthread -o server server.o libpassive.a
 
 client.o: fileclient.c active.h
 	$(CC) -c fileclient.c -o client.o

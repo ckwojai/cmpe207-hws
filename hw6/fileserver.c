@@ -81,7 +81,7 @@ main(int argc, char *argv[])
 			errexit("pthread_create: %s\n", strerror(errno));
 		}
 		(void) pthread_mutex_lock(&stats.st_mutex);
-		printf("Thread No. %d with id %ld start receiving file data", stats.st_contotal, (long) th);
+		printf("Thread No. %d with id %ld start receiving file data\n", stats.st_contotal, (long) th);
 		(void) pthread_mutex_unlock(&stats.st_mutex);
 	}
 }
