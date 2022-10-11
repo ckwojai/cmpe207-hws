@@ -67,7 +67,6 @@ main(int argc, char *argv[])
 
 	if (pthread_create(&th, &ta, (void * (*)(void *))prstats, 0) < 0)
 		errexit("pthread_create(prstats): %s\n", strerror(errno));
-	int fileCount = 0;
 	while (1) {
 		alen = sizeof(fsin);
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
@@ -76,13 +75,12 @@ main(int argc, char *argv[])
 				continue;
 			errexit("accept: %s\n", strerror(errno));
 		}
-		fileCount++;
 		if (pthread_create(&th, &ta, (void * (*)(void *))TCPreceiveFile,
 						   (void *)ssock) < 0) {
 			errexit("pthread_create: %s\n", strerror(errno));
 		}
 		(void) pthread_mutex_lock(&stats.st_mutex);
-		printf("Thread No. %d with id %ld start receiving file data\n", stats.st_contotal+1, (long) th);
+		printf("Thread with id %ld start receiving file data\n", (long) th);
 		(void) pthread_mutex_unlock(&stats.st_mutex);
 	}
 }
