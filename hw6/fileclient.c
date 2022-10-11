@@ -28,6 +28,10 @@ int main() {
       // reset buf to clear junk
       memset(buf, '\0', strlen(buf));
       close(sockfd);
+      // since the filename is determined by the order of request received from the server side
+      // a little delay make sure client request 1-5 is received in order from the server side
+      // otherwise, 12345 can be received as 13245 from the server side, and diff will fail
+      sleep(1);
    }
    return 0;
 }

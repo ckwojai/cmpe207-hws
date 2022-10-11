@@ -19,7 +19,7 @@
 #define	QLEN		  32	/* maximum connection queue length	*/
 #define	BUFSIZE		8192 // read can only read 8192 at a time, so this is enough
 
-#define	INTERVAL	5	/* secs */
+#define	INTERVAL	3	/* secs */
 
 struct {
 	pthread_mutex_t	st_mutex;
@@ -85,10 +85,6 @@ main(int argc, char *argv[])
 	}
 }
 
-/*------------------------------------------------------------------------
- * TCPechod - echo data until end of file
- *------------------------------------------------------------------------
- */
 int
 TCPreceiveFile(int fd)
 {
