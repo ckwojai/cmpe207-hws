@@ -142,6 +142,7 @@ doTCP(struct service *psv)
 			(void) close(fd);
 		}
 	}
+	printf("WHY DOES ANYTHING AFTER THE ABOVE FOR LOOP WONT PRINT?????\n");
 	int status = psv->sv_func(ssock);
 	printFinish("tcp", psv->sv_name);
 	exit(status);
