@@ -133,10 +133,9 @@ int UDPechod(int fd) {
 	char buf[BUFSIZ];
 
 	struct sockaddr_in fsin;
-	socklen_t alen;
 	int n;
 	printReceive(transport, service);
-	if ((n = recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, &alen)) < 0) {
+	if ((n = recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, sizeof(fsin))) < 0) {
          errexit("recvfrom: %s\n", strerror(errno));
 	}
 	buf[n] = '\0';
@@ -167,9 +166,8 @@ int UDPchargend(int fd) {
 
 	char request[1];
 	struct sockaddr_in fsin;
-	socklen_t alen;
 	printReceive(transport, service);
-	if (recvfrom(fd, request, sizeof(request), 0, (struct sockaddr*)&fsin, &alen) < 0) {
+	if (recvfrom(fd, request, sizeof(request), 0, (struct sockaddr*)&fsin, sizeof(fsin)) < 0) {
          errexit("recvfrom: %s\n", strerror(errno));
 	}
 	(void) sendto(fd, (char *)&buf, sizeof(buf), 0, (struct sockaddr*)&fsin, sizeof(fsin));
