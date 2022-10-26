@@ -134,10 +134,12 @@ int UDPechod(int fd) {
 
 	struct sockaddr_in fsin;
 	socklen_t alen;
+	int n;
 	printReceive(transport, service);
-	if (recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, &alen) < 0) {
+	if ((n = recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, &alen)) < 0) {
          errexit("recvfrom: %s\n", strerror(errno));
 	}
+	buf[n] = '\0';
 	(void) sendto(fd, (char *)&buf, sizeof(buf), 0, (struct sockaddr*)&fsin, sizeof(fsin));
 	printFinish(transport, service);
 	return 0;
