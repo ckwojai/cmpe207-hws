@@ -58,8 +58,6 @@ struct service svent[] =
 
 #define	LINELEN		128
 
-extern	u_short	portbase;	/* from passivesock()	*/
-
 /*------------------------------------------------------------------------
  * main - Super-server main program
  *------------------------------------------------------------------------
@@ -71,16 +69,6 @@ main(int argc, char *argv[])
 		*fd2sv[NOFILE];		/* map fd to service pointer	*/
 	int	fd, nfds;
 	fd_set	afds, rfds;		/* readable file descriptors	*/
-
-	switch (argc) {
-	case 1:
-		break;
-	case 2:
-		portbase = (u_short) atoi(argv[1]);
-		break;
-	default:
-		errexit("usage: superd [portbase]\n");
-	}
 
 	nfds = 0;
 	FD_ZERO(&afds);

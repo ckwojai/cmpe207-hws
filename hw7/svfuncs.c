@@ -13,7 +13,6 @@
 #define	BUFSIZ	4096		/* max read buffer size	*/
 
 extern	int	errno;
-extern	char	*sys_errlist[];
 
 int errexit(const char *format, ...);
 
@@ -38,9 +37,9 @@ TCPechod(int fd)
 
 	while (cc = read(fd, buf, sizeof buf)) {
 		if (cc < 0)
-			errexit("echo read: %s\n", sys_errlist[errno]);
+			errexit("echo read: %s\n", strerror(errno));
 		if (write(fd, buf, cc) < 0);
-			errexit("echo write: %s\n", sys_errlist[errno]);
+			errexit("echo write: %s\n", strerror(errno));
 	}
 	return 0;
 }

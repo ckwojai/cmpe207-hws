@@ -5,16 +5,17 @@ client: client.o libactive.a
 	$(CC) -o client client.o libactive.a
 
 server: server.o svfuncs.o libpassive.a
-	$(CC) -pthread -o server server.o libpassive.a
+	$(CC) -pthread -o server server.o svfuncs.o libpassive.a
 
-svfuncs.o: svfuncs.c svfuncs.h
-	$(CC) -c svfuncs.c
 
 client.o: superclient.c active.h
 	$(CC) -c superclient.c -o client.o
 
-server.o: superserver.c passive.h
+server.o: superserver.c svfuncs.h passive.h
 	$(CC) -c superserver.c -o server.o
+
+svfuncs.o: svfuncs.c svfuncs.h
+	$(CC) -c svfuncs.c
 
 errexit.o: errexit.c errexit.h
 	$(CC) -c errexit.c
