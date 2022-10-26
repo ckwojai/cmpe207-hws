@@ -18,12 +18,12 @@ int errexit(const char *format, ...);
 
 void printReceive(char* transport, char* service) {
 	pid_t pid = getpid();
-	printf("[%s_%s] Child %d recieved the %s request", transport, service, (int)pid, service);
+	printf("[%s_%s] Child %d recieved the %s request\n", transport, service, (int)pid, service);
 }
 
 void printFinish(char* transport, char* service) {
 	pid_t pid = getpid();
-	printf("[%s_%s] Child %d finished the %s service", transport, service, (int)pid, service);
+	printf("[%s_%s] Child %d finished the %s service\n", transport, service, (int)pid, service);
 }
 /*------------------------------------------------------------------------
  * TCPecho - do TCP ECHO on the given socket
