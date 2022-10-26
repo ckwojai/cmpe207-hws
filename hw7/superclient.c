@@ -173,6 +173,7 @@ int main(int argc, char* argv[]) {
         case 3:
             transport = argv[1];
             service = argv[2];
+            break;
         default:
             errexit("Not enough argument");
     }
