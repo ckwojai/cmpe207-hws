@@ -33,7 +33,7 @@ TCPechod(int fd)
         }
 		if (cc < 0)
 			errexit("echo read: %s\n", strerror(errno));
-		if (write(fd, buf, cc) < 0);
+		if (write(fd, buf, cc) < 0)
 			errexit("echo write: %s\n", strerror(errno));
 		// reset buf to clear junk
 		memset(buf, '\0', strlen(buf));
