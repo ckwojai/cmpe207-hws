@@ -142,9 +142,11 @@ int UDPtimed(int fd) {
 	if (recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, &alen) < 0) {
          errexit("recvfrom: %s\n", strerror(errno));
       }
+	printReceive(transport, service);
 	time_t now;
 	(void) time(&now);
 	now = htonl((u_long)(now + UNIXEPOCH));
 	(void) sendto(fd, (char *)&now, sizeof(now), 0, (struct sockaddr*)&fsin, sizeof(fsin));
+	printFinish(transport, service);
 	return 0;
 }

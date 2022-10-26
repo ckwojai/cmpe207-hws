@@ -141,7 +141,7 @@ doTCP(struct service *psv)
 void
 doUDP(struct service *psv)
 {
-	exit(psv->sv_func(psv->sv_sock));
+	psv->sv_func(psv->sv_sock);
 }
 
 /*------------------------------------------------------------------------
