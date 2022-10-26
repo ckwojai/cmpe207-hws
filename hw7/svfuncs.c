@@ -28,10 +28,15 @@ TCPechod(int fd)
 	char	buf[BUFSIZ];
 	int	cc;
 	while (cc = read(fd, buf, sizeof buf)) {
+        if (errno == EINTR) {
+           continue;
+        }
 		if (cc < 0)
 			errexit("echo read: %s\n", strerror(errno));
 		if (write(fd, buf, cc) < 0);
 			errexit("echo write: %s\n", strerror(errno));
+		// reset buf to clear junk
+		memset(buf, '\0', strlen(buf));
 	}
 	return 0;
 }
