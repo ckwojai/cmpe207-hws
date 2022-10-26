@@ -147,7 +147,7 @@ int handleConnection(const char* host, const char* transport, const char* servic
         } else {
             errexit("Service %s not supported", service);
         }
-    } else if (strcmp(transport, "udp")) {
+    } else if (strcmp(transport, "udp") == 0) {
         if (strcmp(service, "time") == 0) {
             UDPtimec(host);
         } else if (strcmp(service, "daytime") == 0) {
