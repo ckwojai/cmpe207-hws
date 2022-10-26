@@ -137,9 +137,11 @@ doTCP(struct service *psv)
 	}
 	/* child */
 	printReceive("tcp", psv->sv_name);
-	/* for (fd = NOFILE; fd >= 0; --fd) */
-	/* 	if (fd != ssock) */
-	/* 		(void) close(fd); */
+	for (fd = NOFILE; fd >= 0; --fd) {
+		if (fd != ssock) {
+			(void) close(fd);
+		}
+	}
 	int status = psv->sv_func(ssock);
 	printFinish("tcp", psv->sv_name);
 	exit(status);
