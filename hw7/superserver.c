@@ -58,6 +58,15 @@ struct service svent[] =
 
 #define	LINELEN		128
 
+void printReceive(char* transport, char* service) {
+	pid_t pid = getpid();
+	printf("[%s_%s] Child %d recieved the %s request\n", transport, service, (int)pid, service);
+}
+
+void printFinish(char* transport, char* service) {
+	pid_t pid = getpid();
+	printf("[%s_%s] Child %d finished the %s service\n", transport, service, (int)pid, service);
+}
 /*------------------------------------------------------------------------
  * main - Super-server main program
  *------------------------------------------------------------------------
@@ -131,7 +140,11 @@ doTCP(struct service *psv)
 	for (fd = NOFILE; fd >= 0; --fd)
 		if (fd != ssock)
 			(void) close(fd);
-	exit(psv->sv_func(ssock));
+
+	printReceive("tcp", psv->sv_name);
+	int status = psv->sv_func(ssock);
+	printFinish("tcp", psv->sv_name);
+	exit(status);
 }
 
 /*------------------------------------------------------------------------
@@ -141,7 +154,9 @@ doTCP(struct service *psv)
 void
 doUDP(struct service *psv)
 {
+	printReceive("udp", psv->sv_name);
 	psv->sv_func(psv->sv_sock);
+	printFinish("udp", psv->sv_name);
 }
 
 /*------------------------------------------------------------------------
