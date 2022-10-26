@@ -16,7 +16,7 @@
 #include <string.h>
 
 
-#include "svfunc.h"
+#include "svfuncs.h"
 
 extern int	errno;
 
@@ -44,11 +44,10 @@ struct service svent[] =
 		{ "chargen", TCP_SERV, NOSOCK, TCPchargend },
 		{ "daytime", TCP_SERV, NOSOCK, TCPdaytimed },
 		{ "time", TCP_SERV, NOSOCK, TCPtimed },
-	{	{ "echo", UDP_SERV, NOSOCK, UDPechod },
+		{ "echo", UDP_SERV, NOSOCK, UDPechod },
 		{ "chargen", UDP_SERV, NOSOCK, UDPchargend },
 		{ "daytime", UDP_SERV, NOSOCK, UDPdaytimed },
 		{ "time", UDP_SERV, NOSOCK, UDPtimed },
-		{ 0, 0, 0, 0 },
 	};
 
 #ifndef	MAX
@@ -154,7 +153,7 @@ doTCP(struct service *psv)
 void
 doUDP(struct service *psv)
 {
-	return psv->sv_func(psv->sv_sock);
+	exit(psv->sv_func(psv->sv_sock));
 }
 
 /*------------------------------------------------------------------------

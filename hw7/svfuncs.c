@@ -98,9 +98,7 @@ TCPdaytimed(int fd)
 int
 TCPtimed(int fd)
 {
-	time_t	now, time();
-	u_long	htonl();
-
+	time_t	now;
 	(void) time(&now);
 	now = htonl((u_long)(now + UNIXEPOCH));
 	(void) write(fd, (char *)&now, sizeof(now));

@@ -7,7 +7,7 @@ client: client.o libactive.a
 server: server.o svfuncs.o libpassive.a
 	$(CC) -pthread -o server server.o libpassive.a
 
-svfuncs.o: svfuncs.c svfunc.h
+svfuncs.o: svfuncs.c svfuncs.h
 	$(CC) -c svfuncs.c
 
 client.o: superclient.c active.h
