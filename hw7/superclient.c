@@ -40,7 +40,7 @@ void UDPdaytimec(const char* host) {
 
    write(sockfd, MSG, strlen(MSG));
 
-   nread = read(sockfd, buf, sizeof(buf));
+   nread = read(sockfd, buf, strlen(buf));
    printf("%s", buf);
    close(sockfd);
 }
