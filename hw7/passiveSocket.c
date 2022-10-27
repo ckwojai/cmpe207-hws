@@ -33,6 +33,8 @@ int passivesock(const char* service, const char* transport, int qlen) {
     // Create socket
     sockfd = socket(ADDR_FAM, type, addrinfo->ai_protocol);
     // Bind socket
+    int flag = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(int));
     if (bind(sockfd, addrinfo->ai_addr, addrinfo->ai_addrlen) < 0) {
         close(sockfd);
         errexit("can't bind to %s port: %s\n", service, strerror(errno)); // strerror converts errno to readable string
