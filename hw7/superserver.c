@@ -130,16 +130,15 @@ doTCP(struct service *psv)
 	case 0:
 		/* child */
 		printReceive("tcp", psv->sv_name);
-		printf("%d\n", ssock);
 		for (fd = NOFILE; fd >= 0; --fd) {
 			if (fd != ssock) {
-				printf("%d\n", fd);
 				(void) close(fd);
 			}
 		}
 		printf("WHY DOES ANYTHING AFTER THE ABOVE FOR LOOP WONT PRINT?????\n");
 		int status = psv->sv_func(ssock);
 		printFinish("tcp", psv->sv_name);
+		close(ssock);
 		exit(status);
 	case -1:
 		errexit("fork: %s\n", strerror(errno));
