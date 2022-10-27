@@ -48,6 +48,7 @@ struct service svent[] =
 		{ "chargen", UDP_SERV, NOSOCK, UDPchargend },
 		{ "daytime", UDP_SERV, NOSOCK, UDPdaytimed },
 		{ "time", UDP_SERV, NOSOCK, UDPtimed },
+		{ 0, 0, 0, 0},
 	};
 
 #ifndef	MAX
