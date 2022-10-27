@@ -27,7 +27,6 @@ TCPechod(int fd)
 {
 	char	buf[BUFSIZ];
 	int	cc;
-	printf("inisde echo tcp handling\n");
 	while (cc = read(fd, buf, sizeof buf)) {
 		if (cc < 0)
 			errexit("echo read: %s\n", strerror(errno));
@@ -78,10 +77,7 @@ TCPdaytimed(int fd)
 
 	(void) time(&now);
 	sprintf(buf, "%s", ctime(&now));
-	/* (void) write(fd, buf, strlen(buf)); */
-	if (send(fd, buf, strlen(buf), 0) < 0) {
-		errexit("[error] Child %i time message send failed: %s\n", 1, strerror(errno));
-	}
+	(void) write(fd, buf, strlen(buf));
 	return 0;
 }
 
@@ -96,10 +92,7 @@ TCPtimed(int fd)
 	time_t	now;
 	(void) time(&now);
 	now = htonl((u_long)(now + UNIXEPOCH));
-	/* (void) write(fd, (char *)&now, sizeof(now)); */
-	if (send(fd, (char *)&now, sizeof(now), 0) < 0) {
-		errexit("[error] Child %i time message send failed: %s\n", 1, strerror(errno));
-	}
+	(void) write(fd, (char *)&now, sizeof(now));
 
 	return 0;
 }
