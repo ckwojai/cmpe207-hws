@@ -79,7 +79,8 @@ void UDPechoc(const char* host) {
 }
 
 void TCPechoc(const char* host) {
-    char* service = "echo";
+    /* char* service = "echo"; */
+    char* service = "4001";
     int n;
     int sockfd = connectTCP(host, service);
     char req[LINELEN];
@@ -97,7 +98,8 @@ void TCPechoc(const char* host) {
 
 
 void TCPtimec(const char* host) {
-    char* service = "time";
+    /* char* service = "time"; */
+    char* service = "4004";
     int nread;
     time_t now; // holds up to 8 bytes
     int sockfd = connectTCP(host, service);
@@ -117,7 +119,8 @@ void TCPtimec(const char* host) {
 }
 
 void TCPdaytimec(const char* host) {
-   char* service = "daytime";
+   /* char* service = "daytime"; */
+   char* service = "4003";
    int nread;
    char buf[LINELEN+1] = {0};
    int sockfd = connectTCP(host, service);
@@ -129,7 +132,8 @@ void TCPdaytimec(const char* host) {
 }
 
 void TCPchargenc(const char* host) {
-    char* service = "chargen";
+    /* char* service = "chargen"; */
+    char* service = "4002";
     int nread;
     char buf[LINELEN+1] = {0};
     int sockfd = connectTCP(host, service);
