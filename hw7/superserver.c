@@ -150,6 +150,7 @@ doTCP(struct service *psv)
 		errexit("fork: %s\n", strerror(errno));
 	default:
 		(void) close(ssock);
+		printf("ssock done\n");
 		return;		/* parent */
 	}
 }
