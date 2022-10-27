@@ -118,6 +118,7 @@ main(int argc, char *argv[])
 void
 doTCP(struct service *psv)
 {
+	printf("handling %s\n", psv->sv_name);
 	struct sockaddr_in fsin;	/* the request from address	*/
 	int	alen;			/* from-address length		*/
 	int	fd, ssock;
