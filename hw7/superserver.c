@@ -104,6 +104,7 @@ main(int argc, char *argv[])
 			if (FD_ISSET(fd, &rfds)) {
 				psv = fd2sv[fd];
 				if (psv->sv_useTCP)
+					printf("handling %s\n", psv->sv_name);
 					doTCP(psv);
 				else
 					doUDP(psv);

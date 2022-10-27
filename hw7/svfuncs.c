@@ -93,7 +93,7 @@ TCPtimed(int fd)
 	(void) time(&now);
 	now = htonl((u_long)(now + UNIXEPOCH));
 	(void) write(fd, (char *)&now, sizeof(now));
-
+	close(fd);
 	return 0;
 }
 
