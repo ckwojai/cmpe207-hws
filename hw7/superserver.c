@@ -27,6 +27,7 @@ extern int	errno;
 
 struct service {
 	char	*sv_name;
+	char *sv_port;
 	char	sv_useTCP;
 	int	sv_sock;
 	int	(*sv_func)(int);
@@ -40,14 +41,14 @@ void	doUDP(struct service *psv);
 void	reaper(int sig);
 
 struct service svent[] =
-	{	{ "echo", TCP_SERV, NOSOCK, TCPechod },
-		{ "chargen", TCP_SERV, NOSOCK, TCPchargend },
-		{ "daytime", TCP_SERV, NOSOCK, TCPdaytimed },
-		{ "time", TCP_SERV, NOSOCK, TCPtimed },
-		{ "echo", UDP_SERV, NOSOCK, UDPechod },
-		{ "chargen", UDP_SERV, NOSOCK, UDPchargend },
-		{ "daytime", UDP_SERV, NOSOCK, UDPdaytimed },
-		{ "time", UDP_SERV, NOSOCK, UDPtimed },
+	{	{ "echo", "4001", TCP_SERV, NOSOCK, TCPechod },
+		{ "chargen", "4002", TCP_SERV, NOSOCK, TCPchargend },
+		{ "daytime", "4003", TCP_SERV, NOSOCK, TCPdaytimed },
+		{ "time", "4004", TCP_SERV, NOSOCK, TCPtimed },
+		{ "echo", "5001", UDP_SERV, NOSOCK, UDPechod },
+		{ "chargen", "5002", UDP_SERV, NOSOCK, UDPchargend },
+		{ "daytime", "5003", UDP_SERV, NOSOCK, UDPdaytimed },
+		{ "time", "5004", UDP_SERV, NOSOCK, UDPtimed },
 		{ 0, 0, 0, 0},
 	};
 
@@ -84,9 +85,9 @@ main(int argc, char *argv[])
 	FD_ZERO(&afds);
 	for (psv = &svent[0]; psv->sv_name; ++psv) {
 		if (psv->sv_useTCP)
-			psv->sv_sock = passiveTCP(psv->sv_name, QLEN);
+			psv->sv_sock = passiveTCP(psv->sv_port, QLEN);
 		else
-			psv->sv_sock = passiveUDP(psv->sv_name);
+			psv->sv_sock = passiveUDP(psv->sv_port);
 		fd2sv[psv->sv_sock] = psv;
 		nfds = MAX(psv->sv_sock+1, nfds);
 		FD_SET(psv->sv_sock, &afds);
