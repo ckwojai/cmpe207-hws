@@ -104,11 +104,12 @@ void TCPtimec(const char* host) {
     write(sockfd, "foo", 3);
     // Expecting to only receive 4 bytes integer representation of time from server
     /* nread = read(sockfd, &now, sizeof(now)); // doesn't have to be a char*, any void* pointer would work */
+    printf("[tcp_time] Sending TIME request to the server\n");
     if (send(sockfd, MSG, strlen(MSG), 0) < 0) {
         errexit("[error] Time message send failed: %s\n",strerror(errno));
     }
     while ( (nread = recv(sockfd, (char *)&now, sizeof(now), 0)) > 0 ) {}
-
+    printf("[tcp_time] Receive TIME response from the server\n");
     now = ntohl((u_long)now); /* put in host byte order */
     now -= UNIXEPOCH; /* convert UCT to UNIX epoch */
     printf("%s\n", ctime(&now));
