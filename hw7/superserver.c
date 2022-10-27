@@ -101,6 +101,7 @@ main(int argc, char *argv[])
 				continue;
 			errexit("select error: %s\n", strerror(errno));
 		}
+		printf("Selected!\n");
 		for (fd=0; fd<nfds; ++fd)
 			if (FD_ISSET(fd, &rfds)) {
 				psv = fd2sv[fd];
