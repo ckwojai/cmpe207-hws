@@ -174,11 +174,12 @@ doUDP(struct service *psv)
 void
 reaper(int sig)
 {
-	/* int	status; */
+	int	status;
 	printf("repaer working!\n");
-	/* while (wait3(&status, WNOHANG, (struct rusage *)0) >= 0) */
-	pid_t pid;
-	pid = waitpid(0, NULL, WNOHANG);
-	printf("[reaper] Child %i resource has been cleaned up\n", pid);
+	while (wait3(&status, WNOHANG, (struct rusage *)0) >= 0)
+	/* pid_t pid; */
+	/* pid = waitpid(0, NULL, WNOHANG); */
+	/* printf("[reaper] Child %i resource has been cleaned up\n", pid); */
+	printf("repaer done!\n");
 		/* empty */;
 }
