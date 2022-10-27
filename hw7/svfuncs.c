@@ -78,7 +78,10 @@ TCPdaytimed(int fd)
 
 	(void) time(&now);
 	sprintf(buf, "%s", ctime(&now));
-	(void) write(fd, buf, strlen(buf));
+	/* (void) write(fd, buf, strlen(buf)); */
+	if (send(fd, buf, strlen(buf), 0) < 0) {
+		errexit("[error] Child %i time message send failed: %s\n", 1, strerror(errno));
+	}
 	return 0;
 }
 
@@ -93,7 +96,11 @@ TCPtimed(int fd)
 	time_t	now;
 	(void) time(&now);
 	now = htonl((u_long)(now + UNIXEPOCH));
-	(void) write(fd, (char *)&now, sizeof(now));
+	/* (void) write(fd, (char *)&now, sizeof(now)); */
+	if (send(fd, (char *)&now, sizeof(now), 0) < 0) {
+		errexit("[error] Child %i time message send failed: %s\n", 1, strerror(errno));
+	}
+
 	return 0;
 }
 
@@ -109,7 +116,7 @@ int UDPechod(int fd) {
 	socklen_t alen = sizeof(fsin);
 	int n;
 	if ((n = recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, &alen)) < 0) {
-         errexit("recvfrom: %s\n", strerror(errno));
+		errexit("recvfrom: %s\n", strerror(errno));
 	}
 	buf[n] = '\0';
 	(void) sendto(fd, (char *)&buf, sizeof(buf), 0, (struct sockaddr*)&fsin, sizeof(fsin));
@@ -138,7 +145,7 @@ int UDPchargend(int fd) {
 	struct sockaddr_in fsin;
 	socklen_t alen = sizeof(fsin);
 	if (recvfrom(fd, request, sizeof(request), 0, (struct sockaddr*)&fsin, &alen) < 0) {
-         errexit("recvfrom: %s\n", strerror(errno));
+		errexit("recvfrom: %s\n", strerror(errno));
 	}
 	(void) sendto(fd, (char *)&buf, sizeof(buf), 0, (struct sockaddr*)&fsin, sizeof(fsin));
 	return 0;
@@ -156,7 +163,7 @@ int UDPdaytimed(int fd) {
 	struct sockaddr_in fsin;
 	socklen_t alen;
 	if (recvfrom(fd, request, sizeof(request), 0, (struct sockaddr*)&fsin, &alen) < 0) {
-         errexit("recvfrom: %s\n", strerror(errno));
+		errexit("recvfrom: %s\n", strerror(errno));
 	}
 
 	(void) time(&now);
@@ -173,7 +180,7 @@ int UDPtimed(int fd) {
 	struct sockaddr_in fsin;
 	socklen_t alen;
 	if (recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&fsin, &alen) < 0) {
-         errexit("recvfrom: %s\n", strerror(errno));
+		errexit("recvfrom: %s\n", strerror(errno));
 	}
 	time_t now;
 	(void) time(&now);
