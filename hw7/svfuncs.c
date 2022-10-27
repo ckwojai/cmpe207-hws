@@ -27,6 +27,7 @@ TCPechod(int fd)
 {
 	char	buf[BUFSIZ];
 	int	cc;
+	printf("inisde echo tcp handling\n");
 	while (cc = read(fd, buf, sizeof buf)) {
 		if (cc < 0)
 			errexit("echo read: %s\n", strerror(errno));
