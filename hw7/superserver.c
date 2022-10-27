@@ -166,7 +166,7 @@ void
 reaper(int sig)
 {
 	int	status;
-
+	printf("repaer working!\n");
 	while (wait3(&status, WNOHANG, (struct rusage *)0) >= 0)
 		/* empty */;
 }

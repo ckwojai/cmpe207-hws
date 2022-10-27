@@ -101,7 +101,7 @@ void TCPtimec(const char* host) {
     int nread;
     time_t now; // holds up to 8 bytes
     int sockfd = connectTCP(host, service);
-
+    write(sockfd, "foo", 3);
     // Expecting to only receive 4 bytes integer representation of time from server
     nread = read(sockfd, &now, sizeof(now)); // doesn't have to be a char*, any void* pointer would work
 
@@ -117,6 +117,7 @@ void TCPdaytimec(const char* host) {
    char buf[LINELEN+1] = {0};
    int sockfd = connectTCP(host, service);
 
+   write(sockfd, "foo", 3);
    nread = read(sockfd, buf, sizeof(buf));
    printf("%s", buf);
    close(sockfd);
