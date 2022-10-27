@@ -103,7 +103,11 @@ void TCPtimec(const char* host) {
     int sockfd = connectTCP(host, service);
     write(sockfd, "foo", 3);
     // Expecting to only receive 4 bytes integer representation of time from server
-    nread = read(sockfd, &now, sizeof(now)); // doesn't have to be a char*, any void* pointer would work
+    /* nread = read(sockfd, &now, sizeof(now)); // doesn't have to be a char*, any void* pointer would work */
+    if (send(sockfd, MSG, strlen(MSG), 0) < 0) {
+        errexit("[error] Time message send failed: %s\n",strerror(errno));
+    }
+    while ( (nread = recv(sockfd, (char *)&now, sizeof(now), 0)) > 0 ) {}
 
     now = ntohl((u_long)now); /* put in host byte order */
     now -= UNIXEPOCH; /* convert UCT to UNIX epoch */
