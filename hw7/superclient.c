@@ -107,7 +107,7 @@ void TCPtimec(const char* host) {
 
     now = ntohl((u_long)now); /* put in host byte order */
     now -= UNIXEPOCH; /* convert UCT to UNIX epoch */
-    printf("%s", ctime(&now));
+    printf("%s\n", ctime(&now));
     close(sockfd);
 }
 
@@ -119,7 +119,7 @@ void TCPdaytimec(const char* host) {
 
    write(sockfd, "foo", 3);
    nread = read(sockfd, buf, sizeof(buf));
-   printf("%s", buf);
+   printf("%s\n", buf);
    close(sockfd);
 }
 
