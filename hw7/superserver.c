@@ -135,10 +135,12 @@ doTCP(struct service *psv)
 				(void) close(fd);
 			}
 		}
+		fflush(stdout);
 		printf("WHY DOES ANYTHING AFTER THE ABOVE FOR LOOP WONT PRINT?????\n");
 		int status = psv->sv_func(ssock);
 		printFinish("tcp", psv->sv_name);
 		close(ssock);
+		fflush(stdout);
 		exit(status);
 	case -1:
 		errexit("fork: %s\n", strerror(errno));
