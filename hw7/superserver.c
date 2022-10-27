@@ -140,9 +140,10 @@ doTCP(struct service *psv)
 			}
 		}
 		printReceive("tcp", psv->sv_name);
-		int status = psv->sv_func(ssock);
-		printFinish("tcp", psv->sv_name);
-		exit(status);
+		exit(psv->sv_func(ssock));
+		/* int status = psv->sv_func(ssock); */
+		/* printFinish("tcp", psv->sv_name); */
+		/* exit(status); */
 	case -1:
 		errexit("fork: %s\n", strerror(errno));
 	default:
