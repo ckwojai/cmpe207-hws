@@ -12,6 +12,7 @@
 #define BUFSIZE 65536  // 64kiB = 1024 * 64
 #define UNIXEPOCH 2208988800 /* UNIX epoch, in UCT secs */
 #define MSG "what time is it?\n"
+#define LOOPDELAY 5
 
 
 void UDPtimec(const char* host) {
@@ -112,7 +113,6 @@ void TCPdaytimec(const char* host) {
     char buf[LINELEN+1] = {0};
     int sockfd = connectTCP(host, service);
 
-    write(sockfd, "foo", 3);
     read(sockfd, buf, sizeof(buf));
     printf("%s", buf);
     close(sockfd);
@@ -135,12 +135,12 @@ int handleConnection(const char* host, const char* transport, const char* servic
         if (strcmp(service, "time") == 0) {
             while(1) {
                 TCPtimec(host);
-                sleep(3);
+                sleep(LOOPDELAY);
             }
         } else if (strcmp(service, "daytime") == 0) {
             while(1) {
                 TCPdaytimec(host);
-                sleep(3);
+                sleep(LOOPDELAY);
             }
         } else if (strcmp(service, "echo") == 0) {
             TCPechoc(host);
@@ -153,19 +153,19 @@ int handleConnection(const char* host, const char* transport, const char* servic
         if (strcmp(service, "time") == 0) {
             while(1) {
                 UDPtimec(host);
-                sleep(3);
+                sleep(LOOPDELAY);
             }
         } else if (strcmp(service, "daytime") == 0) {
             while(1) {
                 UDPdaytimec(host);
-                sleep(3);
+                sleep(LOOPDELAY);
             }
         } else if (strcmp(service, "echo") == 0) {
             UDPechoc(host);
         } else if (strcmp(service, "chargen") == 0) {
             while(1) {
                 UDPchargenc(host);
-                sleep(3);
+                sleep(LOOPDELAY);
             }
         } else {
             errexit("Service %s not supported", service);
