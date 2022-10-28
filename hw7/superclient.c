@@ -72,7 +72,7 @@ void UDPechoc(const char* host) {
     write(sockfd, req, strlen(req));
     nread = read(sockfd, res, LINELEN);
     res[nread] = '\0'; // make sure string is null-terminated
-    printf("%s \n", res);
+    printf("%s\n", res);
     close(sockfd);
 }
 
@@ -103,7 +103,7 @@ void TCPtimec(const char* host) {
     read(sockfd, &now, sizeof(now)); // doesn't have to be a char*, any void* pointer would work
     now = ntohl((u_long)now); /* put in host byte order */
     now -= UNIXEPOCH; /* convert UCT to UNIX epoch */
-    printf("%s\n", ctime(&now));
+    printf("%s", ctime(&now));
     close(sockfd);
 }
 
@@ -114,7 +114,7 @@ void TCPdaytimec(const char* host) {
 
     write(sockfd, "foo", 3);
     read(sockfd, buf, sizeof(buf));
-    printf("%s\n", buf);
+    printf("%s", buf);
     close(sockfd);
 }
 
