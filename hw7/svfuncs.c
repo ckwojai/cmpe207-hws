@@ -35,7 +35,6 @@ TCPechod(int fd)
 		// reset buf to clear junk
 		memset(buf, '\0', strlen(buf));
 	}
-	close(fd);
 	return 0;
 }
 
@@ -63,7 +62,6 @@ TCPchargend(int fd)
 		if (write(fd, buf, LINELEN+2) < 0)
 			break;
 	}
-	close(fd);
 	return 0;
 }
 
@@ -80,7 +78,6 @@ TCPdaytimed(int fd)
 	(void) time(&now);
 	sprintf(buf, "%s", ctime(&now));
 	(void) write(fd, buf, strlen(buf));
-	close(fd);
 	return 0;
 }
 
@@ -96,7 +93,6 @@ TCPtimed(int fd)
 	(void) time(&now);
 	now = htonl((u_long)(now + UNIXEPOCH));
 	(void) write(fd, (char *)&now, sizeof(now));
-	close(fd);
 	return 0;
 }
 

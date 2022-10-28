@@ -60,14 +60,12 @@ void UDPchargenc(const char* host) {
 
 
 void UDPechoc(const char* host) {
-   char* service = "echo";
-   int nread;
-   char buf[LINELEN+1] = {0};
-   int sockfd = connectUDP(host, service);
+    char* service = "echo";
+    int nread;
+    int sockfd = connectUDP(host, service);
 
-
-   char req[LINELEN];
-   char res[LINELEN];
+    char req[LINELEN];
+    char res[LINELEN];
 
     fgets(req, LINELEN, stdin);
     req[strcspn(req, "\n")] = 0; // remove trailing newline character
@@ -79,8 +77,7 @@ void UDPechoc(const char* host) {
 }
 
 void TCPechoc(const char* host) {
-    /* char* service = "echo"; */
-    char* service = "4001";
+    char* service = "echo";
     int n;
     int sockfd = connectTCP(host, service);
     char req[LINELEN];
@@ -98,20 +95,12 @@ void TCPechoc(const char* host) {
 
 
 void TCPtimec(const char* host) {
-    /* char* service = "time"; */
-    char* service = "4004";
-    int nread;
+    char* service = "time";
     time_t now; // holds up to 8 bytes
     int sockfd = connectTCP(host, service);
-    write(sockfd, "foo", 3);
+
     // Expecting to only receive 4 bytes integer representation of time from server
-    /* nread = read(sockfd, &now, sizeof(now)); // doesn't have to be a char*, any void* pointer would work */
-    printf("[tcp_time] Sending TIME request to the server\n");
-    if (send(sockfd, MSG, strlen(MSG), 0) < 0) {
-        errexit("[error] Time message send failed: %s\n",strerror(errno));
-    }
-    while ( (nread = recv(sockfd, (char *)&now, sizeof(now), 0)) > 0 ) {}
-    printf("[tcp_time] Receive TIME response from the server\n");
+    read(sockfd, &now, sizeof(now)); // doesn't have to be a char*, any void* pointer would work
     now = ntohl((u_long)now); /* put in host byte order */
     now -= UNIXEPOCH; /* convert UCT to UNIX epoch */
     printf("%s\n", ctime(&now));
@@ -119,21 +108,18 @@ void TCPtimec(const char* host) {
 }
 
 void TCPdaytimec(const char* host) {
-   /* char* service = "daytime"; */
-   char* service = "4003";
-   int nread;
-   char buf[LINELEN+1] = {0};
-   int sockfd = connectTCP(host, service);
+    char* service = "daytime";
+    char buf[LINELEN+1] = {0};
+    int sockfd = connectTCP(host, service);
 
-   write(sockfd, "foo", 3);
-   nread = read(sockfd, buf, sizeof(buf));
-   printf("%s\n", buf);
-   close(sockfd);
+    write(sockfd, "foo", 3);
+    read(sockfd, buf, sizeof(buf));
+    printf("%s\n", buf);
+    close(sockfd);
 }
 
 void TCPchargenc(const char* host) {
-    /* char* service = "chargen"; */
-    char* service = "4002";
+    char* service = "chargen";
     int nread;
     char buf[LINELEN+1] = {0};
     int sockfd = connectTCP(host, service);
@@ -147,9 +133,15 @@ void TCPchargenc(const char* host) {
 int handleConnection(const char* host, const char* transport, const char* service) {
     if (strcmp(transport, "tcp") == 0) {
         if (strcmp(service, "time") == 0) {
-            TCPtimec(host);
+            while(1) {
+                TCPtimec(host);
+                sleep(3);
+            }
         } else if (strcmp(service, "daytime") == 0) {
-            TCPdaytimec(host);
+            while(1) {
+                TCPdaytimec(host);
+                sleep(3);
+            }
         } else if (strcmp(service, "echo") == 0) {
             TCPechoc(host);
         } else if (strcmp(service, "chargen") == 0) {
@@ -159,18 +151,26 @@ int handleConnection(const char* host, const char* transport, const char* servic
         }
     } else if (strcmp(transport, "udp") == 0) {
         if (strcmp(service, "time") == 0) {
-            UDPtimec(host);
+            while(1) {
+                UDPtimec(host);
+                sleep(3);
+            }
         } else if (strcmp(service, "daytime") == 0) {
-            UDPdaytimec(host);
+            while(1) {
+                UDPdaytimec(host);
+                sleep(3);
+            }
         } else if (strcmp(service, "echo") == 0) {
             UDPechoc(host);
         } else if (strcmp(service, "chargen") == 0) {
-            UDPchargenc(host);
+            while(1) {
+                UDPchargenc(host);
+                sleep(3);
+            }
         } else {
             errexit("Service %s not supported", service);
         }
-    }
-    else /* default: */ {
+    } else /* default: */ {
         errexit("Transport %s not supported", transport);
     }
 }
