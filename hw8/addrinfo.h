@@ -45,9 +45,4 @@ struct addrinfo {
 #define	EAI_SOCKTYPE	10	/* ai_socktype not supported */
 #define	EAI_SYSTEM		11	/* system error returned in errno */
 
-#endif	/* __addrinfo_h */#ifndef ADDRINFO_H_
-#define ADDRINFO_H_
-
-
-
-#endif // ADDRINFO_H_
+#endif	/* __addrinfo_h */
