@@ -4,4 +4,4 @@ rm libunp.a Make.defines Makefile config.h config.log
 cd lib && make clean && make
 cd ../libfree && make clean && make
 cd ../sockopt && make clean && make
-./sockopt
+./checkopts
