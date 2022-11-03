@@ -468,9 +468,4 @@ void	 err_quit(const char *, ...);
 void	 err_ret(const char *, ...);
 void	 err_sys(const char *, ...);
 
-#endif	/* __unp_h */#ifndef UNP_H_
-#define UNP_H_
-
-
-
-#endif // UNP_H_
+#endif	/* __unp_h */
