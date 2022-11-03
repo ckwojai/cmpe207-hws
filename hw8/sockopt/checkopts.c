@@ -57,16 +57,6 @@ main(int argc, char **argv)
 			case IPPROTO_TCP:
 				fd = Socket(AF_INET, SOCK_STREAM, 0);
 				break;
-#ifdef	IPV6
-			case IPPROTO_IPV6:
-				fd = Socket(AF_INET6, SOCK_STREAM, 0);
-				break;
-#endif
-#ifdef	IPPROTO_SCTP
-			case IPPROTO_SCTP:
-				fd = Socket(AF_INET, SOCK_SEQPACKET, IPPROTO_SCTP);
-				break;
-#endif
 			default:
 				err_quit("Can't create fd for level %d\n", ptr->opt_level);
 			}
