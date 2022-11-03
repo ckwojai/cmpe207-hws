@@ -112,10 +112,10 @@
 #endif
 
 /* The structure returned by recvfrom_flags() */
-struct in_pktinfo {
-  struct in_addr	ipi_addr;	/* dst IPv4 address */
-  int				ipi_ifindex;/* received interface index */
-};
+/* struct in_pktinfo { */
+/*   struct in_addr	ipi_addr;	/\* dst IPv4 address *\/ */
+/*   int				ipi_ifindex;/\* received interface index *\/ */
+/* }; */
 /* $$.It in_pktinfo$$ */
 /* $$.Ib ipi_addr$$ */
 /* $$.Ib ipi_ifindex$$ */
@@ -205,7 +205,7 @@ typedef	void	Sigfunc(int);	/* for signal handlers */
 #define	max(a,b)	((a) > (b) ? (a) : (b))
 
 #ifndef	HAVE_ADDRINFO_STRUCT
-# include	"../lib/addrinfo.h"
+# include	"addrinfo.h"
 #endif
 
 #ifndef	HAVE_IF_NAMEINDEX_STRUCT
