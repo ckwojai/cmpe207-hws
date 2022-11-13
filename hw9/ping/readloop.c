@@ -19,6 +19,9 @@ readloop(void)
 	size = 60 * 1024;		/* OK if setsockopt fails */
 	setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &size, sizeof(size));
 
+	int ttl = 30; /* max = 255 */
+	setsockopt(sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
+
 	sig_alrm(SIGALRM);		/* send first packet */
 
 	iov.iov_base = recvbuf;

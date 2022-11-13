@@ -9,7 +9,7 @@ send_v4(void)
 	icmp = (struct icmp *) sendbuf;
 	icmp->icmp_type = ICMP_ECHO;
 	icmp->icmp_code = 0;
-	icmp->icmp_id = pid;
+	icmp->icmp_id = 3848; // pid;
 	icmp->icmp_seq = nsent++;
 	memset(icmp->icmp_data, 0xa5, datalen);	/* fill with pattern */
 	Gettimeofday((struct timeval *) icmp->icmp_data, NULL);
