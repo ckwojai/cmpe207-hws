@@ -10,7 +10,7 @@ send_v6()
 	icmp6 = (struct icmp6_hdr *) sendbuf;
 	icmp6->icmp6_type = ICMP6_ECHO_REQUEST;
 	icmp6->icmp6_code = 0;
-	icmp6->icmp6_id = pid;
+	icmp6->icmp6_id = 3848; // pid;
 	icmp6->icmp6_seq = nsent++;
 	memset((icmp6 + 1), 0xa5, datalen);	/* fill with pattern */
 	Gettimeofday((struct timeval *) (icmp6 + 1), NULL);
