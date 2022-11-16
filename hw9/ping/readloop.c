@@ -21,6 +21,8 @@ readloop(void)
 
 	int ttl = 30; /* max = 255 */
 	setsockopt(sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
+	// for ipv6
+	setsockopt(sockfd, IPPROTO_IPV6, IPV6_HOPLIMIT, &ttl, sizeof(ttl));
 
 	sig_alrm(SIGALRM);		/* send first packet */
 
