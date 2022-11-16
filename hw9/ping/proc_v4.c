@@ -19,7 +19,7 @@ proc_v4(char *ptr, ssize_t len, struct msghdr *msg, struct timeval *tvrecv)
 		return;				/* malformed packet */
 
 	if (icmp->icmp_type == ICMP_ECHOREPLY) {
-		if (icmp->icmp_id != pid)
+		if (icmp->icmp_id != 3848)
 			return;			/* not a response to our ECHO_REQUEST */
 		if (icmplen < 16)
 			return;			/* not enough data to use */

@@ -15,7 +15,7 @@ proc_v6(char *ptr, ssize_t len, struct msghdr *msg, struct timeval* tvrecv)
 		return;				/* malformed packet */
 
 	if (icmp6->icmp6_type == ICMP6_ECHO_REPLY) {
-		if (icmp6->icmp6_id != pid)
+		if (icmp6->icmp6_id != 3848)
 			return;			/* not a response to our ECHO_REQUEST */
 		if (len < 16)
 			return;			/* not enough data to use */
