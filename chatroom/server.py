@@ -17,13 +17,10 @@ lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
 
 usersockmap = {}
-sock2name = {}
 waitingsocks = []
 
 def accept_wrapper(sock):
     conn, addr = sock.accept()  # Should be ready to read
-    # username = conn.recv(1024) # Expect to receive a initial user name upon connection
-    # sock2name[conn] = username
     print(f"Accepted connection from {addr}")
     conn.setblocking(False)
     data = types.SimpleNamespace(addr=addr, inb=b"", outb=b"")
@@ -51,6 +48,7 @@ def service_connection(key, mask):
             datab.outb += recv_data
         else:
             print(f"Closing connection to {data.addr}")
+            usersockmap.pop(sock)
             sel.unregister(sock)
             sock.close()
     if mask & selectors.EVENT_WRITE:
