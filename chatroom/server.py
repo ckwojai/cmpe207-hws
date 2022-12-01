@@ -45,8 +45,8 @@ def service_connection(key, mask):
     data = key.data
     if mask & selectors.EVENT_READ:
         recv_data = sock.recv(1024)  # Should be ready to read
+        sockb = usersockmap[sock]
         if recv_data:
-            sockb = usersockmap[sock]
             datab = sel.get_key(sockb).data
             datab.outb += recv_data
         else:
@@ -55,7 +55,7 @@ def service_connection(key, mask):
             sock.close()
     if mask & selectors.EVENT_WRITE:
         if data.outb:
-            print(f"Sending message to the other socket: {sock}")
+            print(f"Sending message to the other socket: {sock.fileno()}")
             sent = sock.send(data.outb)  # Should be ready to write
             data.outb = data.outb[sent:]
 

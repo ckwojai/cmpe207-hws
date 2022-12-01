@@ -14,9 +14,7 @@ server_addr = (host, port)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect(server_addr)
 
-# sock.send((f"{args.name}").encode())
-# sock.send(b"Kin")
-
+username = args.name
 while True:
         recv_data = sock.recv(1024)
         if recv_data:
@@ -24,5 +22,6 @@ while True:
         else:
             print(f"Closing sock: {sock}")
             sock.close()
+        print("Me: ", end="")
         mes = input()
-        sock.send(mes.encode())
+        sock.send(f"{username}: {mes}".encode())
